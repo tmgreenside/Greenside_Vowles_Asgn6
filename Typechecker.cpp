@@ -44,6 +44,8 @@ void Typechecker::visit(ASTStatementList& statementList) {
 
 void Typechecker::visit(ASTBasicIf& basicIf) {
     // TODO
+    basicIf.expression->accept(*this);
+    
 }
 
 void Typechecker::visit(ASTIfStatement& ifStatement) {
