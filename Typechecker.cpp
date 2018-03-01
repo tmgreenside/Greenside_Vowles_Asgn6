@@ -14,6 +14,24 @@ void Typechecker::visit(ASTSimpleBoolExpression& simpleBoolExpr) {
 void Typechecker::visit(ASTComplexBoolExpression& complexBoolExpr) {
     // TODO
     currentType = MPLType::BOOL;
+    complexBoolExpr.first->accept(*this);
+    MPLType firstType = currentType;
+    complexBoolExpr.second->accept(*this);
+    if (firstType != currentType) {
+        throw TypecheckerException("Second and First Types not matching");
+    }
+    switch (complexBoolExpr.relation) {
+        case Token::EQUAL:
+        case Token::NOT_EQUAL:
+            break;
+        default:
+            throw TypecheckerException("Invalid operator");
+            break;
+    }
+    if (complexBoolExpr.hasConjunction) {
+        complexBoolExpr.remainder->accept(*this);
+    }
+    currentType = MPLType::BOOL;
 }
 
 void Typechecker::visit(ASTStatementList& statementList) {
