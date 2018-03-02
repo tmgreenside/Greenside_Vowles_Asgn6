@@ -1,6 +1,18 @@
 #include "Typechecker.h"
 #include "ASTNodes.h"
 
+
+/*
+ QUESTIONS FOR SCHROEDER !!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+ 1. look over existing written methods. Are we doing this right?
+ 2. Are our existing methods missing anything?
+ 3. How to use Symbol Table? (see vist(assignmentstatement))
+ 4. Is visit(literal) one that we need to do, or is that one that
+    you completed for us?
+ 
+ */
+
 using namespace std;
 
 void Typechecker::visit(ASTSimpleBoolExpression& simpleBoolExpr) {
@@ -45,15 +57,22 @@ void Typechecker::visit(ASTStatementList& statementList) {
 void Typechecker::visit(ASTBasicIf& basicIf) {
     // TODO
     basicIf.expression->accept(*this);
-    
+    basicIf.statementList->accept(*this);
 }
 
 void Typechecker::visit(ASTIfStatement& ifStatement) {
     // TODO
+    ifStatement.baseIf.accept(*this);
+    for (int i = 0; i < ifStatement.elseifs.size(); i++) {
+        ifStatement.elseifs[i].accept(*this);
+    }
+    ifStatement.elseList->accept(*this);
 }
 
 void Typechecker::visit(ASTWhileStatement& whileStatement) {
     // TODO
+    whileStatement.condition->accept(*this);
+    whileStatement.statements->accept(*this);
 }
 
 void Typechecker::visit(ASTPrintStatement& printStatement) {
@@ -62,6 +81,8 @@ void Typechecker::visit(ASTPrintStatement& printStatement) {
 
 void Typechecker::visit(ASTAssignmentStatement& assignmentStatement) {
     // TODO
+    assignmentStatement.identifier->accept(*this);
+    
 }
 
 void Typechecker::visit(ASTIdentifier& identifier) {
@@ -81,6 +102,9 @@ void Typechecker::visit(ASTLiteral& literal) {
 
 void Typechecker::visit(ASTListLiteral& listLiteral) {
     // TODO
+    for (int i = 0; i < listLiteral.expressions.size(); i++) {
+        listLiteral.expressions[i]->accept(*this);
+    }
 }
 
 void Typechecker::visit(ASTReadExpression& readExpression) {
@@ -93,6 +117,28 @@ void Typechecker::visit(ASTReadExpression& readExpression) {
 
 void Typechecker::visit(ASTComplexExpression& complexExpression) {
     // TODO
+    complexExpression.firstOperand->accept(*this);
+    MPLType firstType = currentType;
+    complexExpression.rest->accept(*this); // change current type for switch
+    if (firstType != currentType) {
+        throw TypecheckerException("Second and First Types must be the same");
+    }
+    switch (complexExpression.operation) {
+        case Token::MODULUS:
+        case Token::MINUS:
+        case Token::MULTIPLY:
+        case Token::DIVIDE:
+            if (firstType == MPLType::STRING) {
+                throw TypecheckerException("Cannot perform math operations other than + on string");
+            }
+        case Token::PLUS:
+            break;
+        default:
+            // we not
+            throw TypecheckerException("Expected a Math operator");
+            break;
+    }
+    
 }
 
 
