@@ -35,7 +35,7 @@ void Typechecker::visit(ASTSimpleBoolExpression& simpleBoolExpr) {
 }
 
 void Typechecker::visit(ASTComplexBoolExpression& complexBoolExpr) {
-    // TODO
+    // TODO check
     currentType = MPLType::BOOL;
     complexBoolExpr.first->accept(*this);
     MPLType firstType = currentType;
@@ -66,13 +66,13 @@ void Typechecker::visit(ASTStatementList& statementList) {
 }
 
 void Typechecker::visit(ASTBasicIf& basicIf) {
-    // TODO
+    // TODO check
     basicIf.expression->accept(*this);
     basicIf.statementList->accept(*this);
 }
 
 void Typechecker::visit(ASTIfStatement& ifStatement) {
-    // TODO
+    // TODO check
     ifStatement.baseIf.accept(*this);
     for (int i = 0; i < ifStatement.elseifs.size(); i++) {
         ifStatement.elseifs[i].accept(*this);
@@ -81,7 +81,7 @@ void Typechecker::visit(ASTIfStatement& ifStatement) {
 }
 
 void Typechecker::visit(ASTWhileStatement& whileStatement) {
-    // TODO
+    // TODO check
     whileStatement.condition->accept(*this);
     whileStatement.statements->accept(*this);
 }
@@ -91,9 +91,13 @@ void Typechecker::visit(ASTPrintStatement& printStatement) {
 }
 
 void Typechecker::visit(ASTAssignmentStatement& assignmentStatement) {
-    // TODO
+    // TODO  // Trevor 3 12 2018 at 12:10 pm
     assignmentStatement.identifier->accept(*this);
-    
+    MPLType firstType = currentType;
+    assignmentStatement.rhs->accept(*this);
+    if (firstType != currentType) {
+        throw TypecheckerException("Invalid type: identifier must be set to value of same type");
+    }
 }
 
 void Typechecker::visit(ASTIdentifier& identifier) {
