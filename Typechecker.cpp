@@ -6,10 +6,21 @@
  QUESTIONS FOR SCHROEDER !!!!!!!!!!!!!!!!!!!!!!!!!!!
  
  1. look over existing written methods. Are we doing this right?
+ 
+ looks ok
+ 
  2. Are our existing methods missing anything?
+ 
+ doesn't look that way
+ 
  3. How to use Symbol Table? (see vist(assignmentstatement))
+ 
+ see example in code he wrote, not much else to see
+ 
  4. Is visit(literal) one that we need to do, or is that one that
     you completed for us?
+ 
+ Done for us.
  
  */
 
@@ -134,7 +145,6 @@ void Typechecker::visit(ASTComplexExpression& complexExpression) {
         case Token::PLUS:
             break;
         default:
-            // we not
             throw TypecheckerException("Expected a Math operator");
             break;
     }
