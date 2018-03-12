@@ -44,6 +44,12 @@ void Typechecker::visit(ASTComplexBoolExpression& complexBoolExpr) {
         throw TypecheckerException("Second and First Types not matching");
     }
     switch (complexBoolExpr.relation) {
+        case Token::GREATER_THAN:
+        case Token::GREATER_THAN_EQUAL:
+        case Token::LESS_THAN:
+        case Token::LESS_THAN_EQUAL:
+            if (currentType != MPLType::INT and currentType != MPLType::STRING)
+                throw TypecheckerException("Operator valid only on integer");
         case Token::EQUAL:
         case Token::NOT_EQUAL:
             break;
@@ -93,8 +99,25 @@ void Typechecker::visit(ASTPrintStatement& printStatement) {
 void Typechecker::visit(ASTAssignmentStatement& assignmentStatement) {
     // TODO  // Trevor 3 12 2018 at 12:10 pm
     if (!table.doesSymbolExist(assignmentStatement.identifier->name)) {
-        // create new identifier
-        
+        // create new identifier, push
+        assignmentStatement.rhs->accept(*this);
+        switch (currentType) {
+            case MPLType::INT:
+                table.storeInt(assignmentStatement.identifier->name);
+                break;
+            case MPLType::BOOL:
+                table.storeBool(assignmentStatement.identifier->name);
+                break;
+            case MPLType::STRING:
+                table.storeString(assignmentStatement.identifier->name);
+                break;
+            case MPLType::ARRAY:
+                table.storeVector(assignmentStatement.identifier->name);
+                break;
+            default:
+                throw TypecheckerException("Invalid type");
+                break;
+        }
     }
     assignmentStatement.identifier->accept(*this);
     MPLType firstType = currentType;
