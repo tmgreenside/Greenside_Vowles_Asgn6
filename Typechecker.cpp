@@ -92,6 +92,10 @@ void Typechecker::visit(ASTPrintStatement& printStatement) {
 
 void Typechecker::visit(ASTAssignmentStatement& assignmentStatement) {
     // TODO  // Trevor 3 12 2018 at 12:10 pm
+    if (!table.doesSymbolExist(assignmentStatement.identifier->name)) {
+        // create new identifier
+        
+    }
     assignmentStatement.identifier->accept(*this);
     MPLType firstType = currentType;
     assignmentStatement.rhs->accept(*this);
