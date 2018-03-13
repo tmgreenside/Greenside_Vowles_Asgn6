@@ -1,28 +1,10 @@
+// names: Trevor Greenside, Sammy Vowles
+// date: 13 March 2018
+// course: CPSC 326 - 01
+// asgn: 6
+
 #include "Typechecker.h"
 #include "ASTNodes.h"
-
-
-/*
- QUESTIONS FOR SCHROEDER !!!!!!!!!!!!!!!!!!!!!!!!!!!
- 
- 1. look over existing written methods. Are we doing this right?
- 
- looks ok
- 
- 2. Are our existing methods missing anything?
- 
- doesn't look that way
- 
- 3. How to use Symbol Table? (see vist(assignmentstatement))
- 
- see example in code he wrote, not much else to see
- 
- 4. Is visit(literal) one that we need to do, or is that one that
-    you completed for us?
- 
- Done for us.
- 
- */
 
 using namespace std;
 
