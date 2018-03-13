@@ -66,6 +66,10 @@ Lexeme Lexer::next() {
             return Lexeme(Token::READINT, "readint", startLine, startCol);
         } else if (word == "readstr") {
             return Lexeme(Token::READSTR, "readstr", startLine, startCol);
+        } else if (word == "false") {
+            return Lexeme(Token::BOOL, "false", startLine, startCol);
+        } else if (word == "true") {
+            return Lexeme(Token::BOOL, "true", startLine, startCol);
         } else {
             return Lexeme(Token::ID, word, startLine, startCol);
         }

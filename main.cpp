@@ -31,6 +31,7 @@ while x > 0 do
 end
 z = [1, 2, 3];
     )code";
+    
     try {
         istringstream ins(code);
         Lexer lexer(ins);

@@ -120,6 +120,8 @@ void ASTPrinter::visit(ASTLiteral& literal) {
         case MPLType::STRING:
             println("String literal: \"", literal.value, "\"");
             break;
+        default: // added by Trevor, xcode didn't like type ARRAY not being handled
+            break;
     }
 }
 
